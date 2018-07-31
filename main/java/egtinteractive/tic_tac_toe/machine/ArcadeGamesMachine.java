@@ -72,4 +72,20 @@ public class ArcadeGamesMachine {
     public StateMachine getState() {
 	return this.state;
     }
+
+    public Player getPlayer() {
+	return player;
+    }
+
+    public void setPlayer(Player player) {
+	this.player = player;
+    }
+
+    public Game getGame() {
+	return game;
+    }
+
+    public void setGame(Game game) {
+	this.game = game;
+    }
 }

@@ -2,9 +2,10 @@ package egtinteractive.tic_tac_toe.games;
 
 public enum Game {
     TIC_TAC_TOE("TicTacToe", 10) {
+	@SuppressWarnings("unused")
 	public void loadTicTacToeGame() {
-	   TicTacToe newTicTacToeGame = new TicTacToe();
-	   newTicTacToeGame.start();
+	    TicTacToe newTicTacToeGame = new TicTacToe();
+	    newTicTacToeGame.start();
 	}
     };
 

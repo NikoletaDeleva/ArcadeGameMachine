@@ -1,6 +1,6 @@
 package egtinteractive.tic_tac_toe.machine;
 
-import egtinteractive.tic_tac_toe.games.Game;
+//import egtinteractive.tic_tac_toe.games.Game;
 
 public enum StateMachine implements Machine {
     STAND_BY {
@@ -30,20 +30,20 @@ public enum StateMachine implements Machine {
 	@Override
 	public boolean selectGame(final ArcadeGamesMachine machine, String name) {
 	    // changes
-	    Game specificGame = machine.getInventory().getItemByName(name);
-
-	    if (specificGame == null) {
-		return false;
-	    }
-	    if (machine.getCoins() < specificGame.getPrice()) {
-		return false;
-	    }
-	    if (machine.getInventory().getAmountOfItem(specificGame) > 0) {
-		machine.getInventory().getOneSpecificItemFromInventory(specificGame);
-		machine.takeCustomerCoins(specificGame);
-		machine.setState(StateMachine.PLAY_GAME);
-		return true;
-	    }
+	    // Game specificGame = machine.getInventory().getItemByName(name);
+	    //
+	    // if (specificGame == null) {
+	    // return false;
+	    // }
+	    // if (machine.getCoins() < specificGame.getPrice()) {
+	    // return false;
+	    // }
+	    // if (machine.getInventory().getAmountOfItem(specificGame) > 0) {
+	    // machine.getInventory().getOneSpecificItemFromInventory(specificGame);
+	    // machine.takeCustomerCoins(specificGame);
+	    // machine.setState(StateMachine.PLAY_GAME);
+	    // return true;
+	    // }
 	    return false;
 	}
 

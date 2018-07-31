@@ -34,7 +34,7 @@ public class TicTacToeBoard implements Board {
 	return this.fields;
     }
 
-    public boolean addMove(final int position,final String sign) {
+    public boolean addMove(final int position, final String sign) {
 	final int row = position / SIZE;
 	final int column = position % SIZE;
 

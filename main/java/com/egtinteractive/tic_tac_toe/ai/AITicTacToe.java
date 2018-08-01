@@ -7,6 +7,8 @@ import com.egtinteractive.tic_tac_toe.boards.Board;
 
 public class AITicTacToe implements AI {
 
+    private String sing;
+    
     @Override
     public Integer move(final Board board) {
 	final List<Integer> freeFields = board.getFreefields();
@@ -17,6 +19,15 @@ public class AITicTacToe implements AI {
 	}
 	
 	return freeFields.get(ThreadLocalRandom.current().nextInt(0,size));
+    }
+
+    @Override
+    public void setSing(String sing) {
+	this.sing = sing;
+    }
+    
+    public String getSign() {
+	return this.sing;
     }
 
 }

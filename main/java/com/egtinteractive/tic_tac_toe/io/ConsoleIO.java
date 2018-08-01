@@ -11,7 +11,7 @@ public class ConsoleIO implements IO {
 
     @Override
     public void write(final String str) {
-	System.err.println(str);
+	System.out.println(str);
 
     }
 

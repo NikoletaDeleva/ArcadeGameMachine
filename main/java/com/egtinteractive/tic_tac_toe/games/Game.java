@@ -1,30 +1,43 @@
 package com.egtinteractive.tic_tac_toe.games;
 
-public enum Game {
-    TIC_TAC_TOE("TicTacToe", 10) {
-	@Override
-	public void load() {
-	    TicTacToe newTicTacToeGame = new TicTacToe();
-	    newTicTacToeGame.start();
-	}
-    };
+import com.egtinteractive.tic_tac_toe.ai.AI;
+import com.egtinteractive.tic_tac_toe.boards.Board;
+import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
+import com.egtinteractive.tic_tac_toe.player.Player;
 
-    private final String name;
-    private final long price;
+public abstract class Game {
 
-    Game(String name, long price) {
-	this.name = name;
-	this.price = price;
+    protected Board board;
+    protected GameStates gameState;
+    protected DrawBoard drawBoard;
+    protected AI ai;
+    protected Player player;
+
+    public Game(Board board, GameStates gameStates, DrawBoard drawBoard, AI ai, Player player) {
+	this.board = board;
+	this.gameState = gameStates;
+	this.drawBoard = drawBoard;
+	this.ai = ai;
+	this.player = player;
     }
 
-    public long getPrice() {
-	return price;
-    }
-
-    public String getName() {
-	return name;
+    public GameStates getGameState() {
+	return gameState;
     }
     
-    public abstract void load();
+    public boolean start() {
+	return false;
+    }
 
+    public void setGameState(GameStates gameState) {
+	this.gameState = gameState;
+    }
+
+    public Board getBoard() {
+	return board;
+    }
+
+    public void setBoard(Board board) {
+	this.board = board;
+    }
 }

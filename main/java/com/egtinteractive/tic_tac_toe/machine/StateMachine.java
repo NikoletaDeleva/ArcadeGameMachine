@@ -1,6 +1,6 @@
 package com.egtinteractive.tic_tac_toe.machine;
 
-import com.egtinteractive.tic_tac_toe.games.Game;
+import com.egtinteractive.tic_tac_toe.games.Games;
 
 public enum StateMachine implements Machine {
     STAND_BY {
@@ -30,7 +30,7 @@ public enum StateMachine implements Machine {
 	}
 
 	@Override
-	public boolean selectGame(final ArcadeGamesMachine machine, final Game game) {
+	public boolean selectGame(final ArcadeGamesMachine machine, final Games game) {
 
 	    if (game == null) {
 		return false;
@@ -62,7 +62,7 @@ public enum StateMachine implements Machine {
     },
     PLAY_GAME {
 	@Override
-	public boolean playGame(final ArcadeGamesMachine machine, final Game game) {
+	public boolean playGame(final ArcadeGamesMachine machine, final Games game) {
 	    if (machine.getCoins() > 0) {
 		machine.returnCoinsToCustomer();
 	    }
@@ -91,12 +91,12 @@ public enum StateMachine implements Machine {
     }
 
     @Override
-    public boolean selectGame(final ArcadeGamesMachine machine, final Game game) {
+    public boolean selectGame(final ArcadeGamesMachine machine, final Games game) {
 	return false;
     }
 
     @Override
-    public boolean playGame(final ArcadeGamesMachine machine, final Game game) {
+    public boolean playGame(final ArcadeGamesMachine machine, final Games game) {
 	return false;
     }
 

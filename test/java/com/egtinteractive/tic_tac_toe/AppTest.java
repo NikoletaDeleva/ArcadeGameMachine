@@ -1,4 +1,4 @@
-package egtinteractive.tic_tac_toe;
+package com.egtinteractive.tic_tac_toe;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -1,4 +1,4 @@
-package egtinteractice.tic_tac_toe.io;
+package com.egtinteractice.tic_tac_toe.io;
 
 import java.util.Scanner;
 
@@ -9,11 +9,13 @@ public class ConsoleIO implements IO {
 	this.scanner = new Scanner(System.in);
     }
 
+    @Override
     public void write(final String str) {
 	System.err.println(str);
 
     }
 
+    @Override
     public String read() {
 	return scanner.nextLine();
     }

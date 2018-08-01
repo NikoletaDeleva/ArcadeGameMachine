@@ -1,9 +1,9 @@
-package egtinteractive.tic_tac_toe.games;
+package com.egtinteractive.tic_tac_toe.games;
 
 public enum Game {
     TIC_TAC_TOE("TicTacToe", 10) {
-	@SuppressWarnings("unused")
-	public void loadTicTacToeGame() {
+	@Override
+	public void load() {
 	    TicTacToe newTicTacToeGame = new TicTacToe();
 	    newTicTacToeGame.start();
 	}
@@ -24,5 +24,7 @@ public enum Game {
     public String getName() {
 	return name;
     }
+    
+    public abstract void load();
 
 }

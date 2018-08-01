@@ -1,8 +1,9 @@
-package egtinteractive.tic_tac_toe.boards;
+package com.egtinteractive.tic_tac_toe.boards;
 
 import java.util.List;
 
 public interface Board {
+
     public String getField(final int position);
 
     public String[][] getAllFields();

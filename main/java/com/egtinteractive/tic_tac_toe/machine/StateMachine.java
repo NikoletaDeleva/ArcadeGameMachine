@@ -1,6 +1,6 @@
-package egtinteractive.tic_tac_toe.machine;
+package com.egtinteractive.tic_tac_toe.machine;
 
-//import egtinteractive.tic_tac_toe.games.Game;
+import com.egtinteractive.tic_tac_toe.games.Game;
 
 public enum StateMachine implements Machine {
     STAND_BY {
@@ -10,7 +10,9 @@ public enum StateMachine implements Machine {
 		return false;
 	    }
 	    machine.addCoinsToMachine(coins);
-	    machine.setState(StateMachine.SELECT_GAME);
+	    if (machine.getCoins() >= 10) {
+		machine.setState(StateMachine.SELECT_GAME);
+	    }
 	    return true;
 	}
 
@@ -28,23 +30,20 @@ public enum StateMachine implements Machine {
 	}
 
 	@Override
-	public boolean selectGame(final ArcadeGamesMachine machine, String name) {
-	    // changes
-	    // Game specificGame = machine.getInventory().getItemByName(name);
-	    //
-	    // if (specificGame == null) {
-	    // return false;
-	    // }
-	    // if (machine.getCoins() < specificGame.getPrice()) {
-	    // return false;
-	    // }
-	    // if (machine.getInventory().getAmountOfItem(specificGame) > 0) {
-	    // machine.getInventory().getOneSpecificItemFromInventory(specificGame);
-	    // machine.takeCustomerCoins(specificGame);
-	    // machine.setState(StateMachine.PLAY_GAME);
-	    // return true;
-	    // }
-	    return false;
+	public boolean selectGame(final ArcadeGamesMachine machine, final Game game) {
+
+	    if (game == null) {
+		return false;
+	    }
+
+	    if (machine.getCoins() < game.getPrice()) {
+		return false;
+	    }
+
+	    machine.takeCustomerCoins(game);
+	    machine.setState(StateMachine.PLAY_GAME);
+	    return true;
+
 	}
 
 	@Override
@@ -63,10 +62,11 @@ public enum StateMachine implements Machine {
     },
     PLAY_GAME {
 	@Override
-	public boolean playGame(final ArcadeGamesMachine machine) {
+	public boolean playGame(final ArcadeGamesMachine machine, final Game game) {
 	    if (machine.getCoins() > 0) {
 		machine.returnCoinsToCustomer();
 	    }
+	    game.load();
 	    machine.setState(StateMachine.STAND_BY);
 	    return true;
 	}
@@ -85,27 +85,33 @@ public enum StateMachine implements Machine {
 	}
     };
 
-    public boolean putCoins(ArcadeGamesMachine machine, long money) {
+    @Override
+    public boolean putCoins(final ArcadeGamesMachine machine, long money) {
 	return false;
     }
 
-    public boolean selectGame(ArcadeGamesMachine machine, String name) {
+    @Override
+    public boolean selectGame(final ArcadeGamesMachine machine, final Game game) {
 	return false;
     }
 
-    public boolean playGame(ArcadeGamesMachine machine) {
+    @Override
+    public boolean playGame(final ArcadeGamesMachine machine, final Game game) {
 	return false;
     }
 
-    public boolean service(ArcadeGamesMachine machine) {
+    @Override
+    public boolean service(final ArcadeGamesMachine machine) {
 	return false;
     }
 
-    public boolean endService(ArcadeGamesMachine machine) {
+    @Override
+    public boolean endService(final ArcadeGamesMachine machine) {
 	return false;
     }
 
-    public boolean returnMoney(ArcadeGamesMachine machine) {
+    @Override
+    public boolean returnMoney(final ArcadeGamesMachine machine) {
 	return false;
     }
 

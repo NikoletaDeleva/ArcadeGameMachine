@@ -1,7 +1,7 @@
-package egtinteractive.tic_tac_toe.machine;
+package com.egtinteractive.tic_tac_toe.machine;
 
-import egtinteractive.tic_tac_toe.games.Game;
-import egtinteractive.tic_tac_toe.player.Player;
+import com.egtinteractive.tic_tac_toe.games.Game;
+import com.egtinteractive.tic_tac_toe.player.Player;
 
 public class ArcadeGamesMachine {
     private static ArcadeGamesMachine arcadeGamesMachineInstance = null;
@@ -12,7 +12,10 @@ public class ArcadeGamesMachine {
     private long coins;
 
     private ArcadeGamesMachine() {
-
+	this.coins = 0L;
+	this.setTotalMoney(0L);
+	this.state = StateMachine.STAND_BY;
+	this.game = null;
     }
 
     public static ArcadeGamesMachine getInstance() {
@@ -20,6 +23,26 @@ public class ArcadeGamesMachine {
 	    arcadeGamesMachineInstance = new ArcadeGamesMachine();
 	}
 	return arcadeGamesMachineInstance;
+    }
+
+    public void loadHomePage() {
+	final StringBuilder sb = new StringBuilder();
+	sb.append(System.lineSeparator() + "CREDIT:" + getCoins() + "-----------------------------------------"
+		+ System.lineSeparator() + "-------------------------------------------------"
+		+ System.lineSeparator());
+	sb.append(String.format("%s %30s" + System.lineSeparator() + "-------------------------------------------------"
+		+ System.lineSeparator(), "GAME:", "PRICE:"));
+
+	for (Game game : Game.values()) {
+
+	    final String name = game.getName();
+	    final long price = game.getPrice();
+
+	    sb.append(String.format("%s %33s" + System.lineSeparator(), name, price));
+	}
+	sb.append(
+		"-------------------------------------------------" + System.lineSeparator() + System.lineSeparator());
+	System.out.println(sb);
     }
 
     void setState(final StateMachine state) {
@@ -88,4 +111,28 @@ public class ArcadeGamesMachine {
     public void setGame(Game game) {
 	this.game = game;
     }
+
+    public long getGamePrice() {
+	return game.getPrice();
+    }
+
+    public boolean playGame() {
+	return state.playGame(this,game);
+    }
+
+    public Game selectGame(final String name) {
+	this.game = getGameByName(name);
+	
+	return this.state.selectGame(this, game) ? game : null;
+    }
+    
+    Game getGameByName(String name) {
+	for(Game game : Game.values()) {
+	    if(game.getName().equals(name)) {
+		return game;
+	    }
+	}
+	return null;
+    }
+
 }

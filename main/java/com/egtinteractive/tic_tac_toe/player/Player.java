@@ -1,4 +1,4 @@
-package egtinteractive.tic_tac_toe.player;
+package com.egtinteractive.tic_tac_toe.player;
 
 public class Player {
     private final String name;

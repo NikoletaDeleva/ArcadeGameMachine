@@ -1,4 +1,4 @@
-package egtinteractive.tic_tac_toe.boards;
+package com.egtinteractive.tic_tac_toe.boards;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,17 @@ public class TicTacToeBoard implements Board {
 	}
     }
 
+    @Override
     public String getField(final int position) {
 	return this.fields[position / SIZE][position % SIZE];
     }
 
+    @Override
     public String[][] getAllFields() {
 	return this.fields;
     }
 
+    @Override
     public boolean addMove(final int position, final String sign) {
 	final int row = position / SIZE;
 	final int column = position % SIZE;
@@ -43,18 +46,22 @@ public class TicTacToeBoard implements Board {
 	return true;
     }
 
+    @Override
     public List<Integer> getFreefields() {
 	return this.freeFields;
     }
 
+    @Override
     public boolean isFull() {
 	return this.freeFields.size() == 0;
     }
 
+    @Override
     public boolean isMoveValid(final int position) {
 	return position >= 0 && position <= SQUARE_SIZE;
     }
 
+    @Override
     public boolean isFieldFree(int position) {
 	return this.getField(position).equals(" ");
     }

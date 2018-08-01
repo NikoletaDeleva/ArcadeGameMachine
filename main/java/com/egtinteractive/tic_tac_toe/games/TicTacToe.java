@@ -2,14 +2,14 @@ package com.egtinteractive.tic_tac_toe.games;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.egtinteractice.tic_tac_toe.io.ConsoleIO;
-import com.egtinteractice.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.ai.AI;
 import com.egtinteractive.tic_tac_toe.ai.AITicTacToe;
 import com.egtinteractive.tic_tac_toe.boards.Board;
 import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
 import com.egtinteractive.tic_tac_toe.boards.TicTacToeBoard;
 import com.egtinteractive.tic_tac_toe.boards.TicTacToeDrawBoard;
+import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
+import com.egtinteractive.tic_tac_toe.io.IO;
 
 public class TicTacToe {
 
@@ -29,7 +29,7 @@ public class TicTacToe {
 
     public void start() {
 	if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
-
+	    
 	}
     }
 

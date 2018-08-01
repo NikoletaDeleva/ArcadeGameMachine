@@ -1,6 +1,6 @@
 package com.egtinteractive.tic_tac_toe.boards;
 
-import com.egtinteractice.tic_tac_toe.io.IO;
+import com.egtinteractive.tic_tac_toe.io.IO;
 
 public class TicTacToeDrawBoard implements DrawBoard {
 

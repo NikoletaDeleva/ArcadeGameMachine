@@ -6,6 +6,8 @@ import java.util.List;
 public class TicTacToeBoard implements Board {
     private static final int SIZE = 3;
     private static final int SQUARE_SIZE = 9;
+   
+
     private final String[][] fields;
     private final List<Integer> freeFields;
 
@@ -34,16 +36,25 @@ public class TicTacToeBoard implements Board {
     @Override
     public String[][] getAllFields() {
 	return this.fields;
+    } 
+    
+    @Override
+    public int getSquareSize() {
+        return fields.length;
     }
 
     @Override
     public boolean addMove(final int position, final String sign) {
 	final int row = position / SIZE;
 	final int column = position % SIZE;
-
-	this.fields[row][column] = sign;
-	this.freeFields.remove(Integer.valueOf(position));
-	return true;
+	if (freeFields.contains(position)) {
+	    this.fields[row][column] = sign;
+	    this.freeFields.remove(Integer.valueOf(position));
+	    return true;
+	}else {
+	    return false;
+	}
+	
     }
 
     @Override

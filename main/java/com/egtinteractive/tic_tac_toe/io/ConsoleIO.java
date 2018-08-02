@@ -21,6 +21,11 @@ public class ConsoleIO implements IO {
     }
 
     @Override
+    public int readPosition() {
+	return scanner.nextInt();
+    }
+    
+    @Override
     public void close() throws Exception {
 	scanner.close();
 

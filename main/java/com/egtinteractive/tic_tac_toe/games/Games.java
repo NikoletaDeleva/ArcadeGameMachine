@@ -4,7 +4,6 @@ public enum Games {
     TIC_TAC_TOE("TicTacToe", 10) {
 	@Override
 	public void load() {
-	    
 	    getGame().start();
 	}
 	

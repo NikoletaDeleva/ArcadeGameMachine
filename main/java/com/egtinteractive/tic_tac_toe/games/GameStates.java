@@ -3,62 +3,113 @@ package com.egtinteractive.tic_tac_toe.games;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum GameStates implements GameMethods {
-    START_GAME{
+    START_GAME {
 	@Override
 	public boolean start(Game game) {
-	    
+
 	    game.drawBoard.drawBoard(game.board);
-	    
-	    if(ThreadLocalRandom.current().nextInt(0,100) < 50) {
-		game.setGameState(GameStates.AI);
+
+	    if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
+		game.io.write("AI starts first");
 		game.player.setSign("X");
 		game.ai.setSing("O");
-	    }else {
-		game.setGameState(GameStates.PLAYER);
+		game.setPosition(game.ai.move(game.board));
+		game.moveAI(game.getPosition());
+		game.drawBoard.drawBoard(game.board);
+	    } else {
+		game.io.write("Player starts first");
 		game.player.setSign("O");
 		game.ai.setSing("X");
 	    }
-	    return true;
-	}
-    },
-    AI{
-	@Override
-	public boolean move(Game game) {
-	    if(game.getBoard().isFull()) {
-		game.setGameState(GameStates.END_GAME);
-		return true;
-	    }
-	    
 	    game.setGameState(GameStates.PLAYER);
+	    game.move();
 	    return true;
 	}
     },
-    PLAYER{
-	
+    AI {
 	@Override
-	public boolean move(Game game) {
-	    
-	    if(game.getBoard().isFull()) {
+	public boolean moveAI(Game game) {
+	    if (game.getBoard().isFull()) {
+		game.setGameState(GameStates.END_GAME);
+		game.showResult();
+		return true;
+	    }
+
+	    game.setPosition(game.ai.move(game.board));
+	    game.moveAI(game.getPosition());
+	    game.drawBoard.drawBoard(game.board);
+
+	    if (game.isWinner()) {
+		game.io.write("AI wins!");
 		game.setGameState(GameStates.END_GAME);
 		return true;
 	    }
-	    
-	    game.setGameState(GameStates.AI);
+
+	    game.setGameState(GameStates.PLAYER);
+	    game.move();
 	    return true;
 	}
     },
-    END_GAME{
-	
+    PLAYER {
+
+	@Override
+	public boolean movePlayer(Game game) {
+	    if (game.getBoard().isFull()) {
+		game.setGameState(GameStates.END_GAME);
+		game.showResult();
+		return true;
+	    }
+
+	    int position;
+
+	    do {
+		position = game.io.readPosition();
+	    } while (!game.board.isFieldFree(position));
+
+	    game.setPosition(position);
+	    game.movePlayer(game.getPosition());
+	    game.drawBoard.drawBoard(game.board);
+
+	    if (game.isWinner()) {
+		game.io.write("Player wins!");
+		game.setGameState(GameStates.END_GAME);
+		return true;
+	    }
+
+	    game.setGameState(GameStates.AI);
+	    game.move();
+	    return true;
+
+	}
+
+    },
+    END_GAME {
+	@Override
+	public boolean endGame(Game game) {
+	    if(!game.isWinner()) {
+		game.io.write("Equal game!");
+	    }
+	    return true;
+	}
     };
-    
+
     @Override
     public boolean start(Game game) {
 	return false;
     }
-    
+
     @Override
-    public boolean move(Game game) {
+    public boolean moveAI(Game game) {
 	return false;
     }
-    
+
+    @Override
+    public boolean movePlayer(Game game) {
+	return false;
+    }
+
+    @Override
+    public boolean endGame(Game game) {
+	return false;
+    }
 }

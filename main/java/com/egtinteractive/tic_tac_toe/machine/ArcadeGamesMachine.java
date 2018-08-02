@@ -2,7 +2,11 @@ package com.egtinteractive.tic_tac_toe.machine;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
 import com.egtinteractive.tic_tac_toe.games.Games;
+import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
+import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.player.Player;
+
+import bsh.Console;
 
 public class ArcadeGamesMachine {
     private static ArcadeGamesMachine arcadeGamesMachineInstance = null;
@@ -12,12 +16,16 @@ public class ArcadeGamesMachine {
     private Player player;
     private long totalMoney;
     private long coins;
+    private IO io;
 
     private ArcadeGamesMachine() {
 	this.coins = 0L;
 	this.setTotalMoney(0L);
 	this.state = StateMachine.STAND_BY;
+	this.io = new ConsoleIO();
 	this.gameType = null;
+	this.game = null;
+	loadHomePage();
     }
 
     public static ArcadeGamesMachine getInstance() {
@@ -72,6 +80,7 @@ public class ArcadeGamesMachine {
 
     public long putCoins(final long coins) {
 	this.state.putCoins(this, coins);
+	this.loadHomePage();
 	return this.coins;
     }
 
@@ -118,13 +127,13 @@ public class ArcadeGamesMachine {
     }
 
     public boolean playGame() {
-	return state.playGame(this,game);
+	return state.playGame(this,gameType, game);
     }
 
     public Games selectGame(final String name) {
 	this.gameType = getGameByName(name);
-	
-	return this.state.selectGame(this, gameType) ? game : null;
+	this.game = gameType.getGame();
+	return this.state.selectGame(this, gameType) ? gameType : null;
     }
     
     Games getGameByName(String name) {
@@ -134,10 +143,6 @@ public class ArcadeGamesMachine {
 	    }
 	}
 	return null;
-    }
-    
-    public void move(int position) {
-	
     }
 
 }

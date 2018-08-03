@@ -6,7 +6,7 @@ public class Player {
     private String sign;
 
     public Player() {
-	this.name = name;
+	this.name = null;
 	this.points = 0;
     }
 

@@ -6,8 +6,6 @@ import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
 import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
-import bsh.Console;
-
 public class ArcadeGamesMachine {
     private static ArcadeGamesMachine arcadeGamesMachineInstance = null;
     private StateMachine state;

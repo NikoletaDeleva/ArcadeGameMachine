@@ -1,6 +1,9 @@
 package com.egtinteractive.tic_tac_toe.games;
 
+import java.sql.Connection;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
 
 public enum GameStates implements GameMethods {
     START_GAME {
@@ -41,6 +44,7 @@ public enum GameStates implements GameMethods {
 
 	    if (game.isWinner()) {
 		game.io.write("AI wins!");
+		addGameWithNoPlayer(game);
 		game.setGameState(GameStates.END_GAME);
 		return true;
 	    }
@@ -72,6 +76,12 @@ public enum GameStates implements GameMethods {
 
 	    if (game.isWinner()) {
 		game.io.write("Player wins!");
+		game.io.write("Set your name:");
+
+		String name = game.io.read();
+
+		giveName(name,game);
+
 		game.setGameState(GameStates.END_GAME);
 		return true;
 	    }
@@ -82,16 +92,39 @@ public enum GameStates implements GameMethods {
 
 	}
 
+	private void addGameWithPlayer(final String name, final Game game) {
+	    final DBQueries dbQueries = game.getDbQueries();
+
+	    if (!dbQueries.doesPlayerExists(name)) {
+		dbQueries.addPlayer(name);
+	    }
+
+	    dbQueries.addGameWithPlayer(name, game.getGameState().toString());
+	}
+
+	private void giveName(String name, final Game game) {
+	    if (name.trim() == null) {
+		addGameWithNoPlayer(game);
+	    } else {
+		addGameWithPlayer(name, game);
+	    }
+	}
+
     },
     END_GAME {
 	@Override
 	public boolean endGame(Game game) {
-	    if(!game.isWinner()) {
+	    if (!game.isWinner()) {
 		game.io.write("Equal game!");
 	    }
 	    return true;
 	}
     };
+
+    public void addGameWithNoPlayer(final Game game) {
+	game.dbQueries.addGameWithNoPlayer(game.getGameState().toString());
+
+    }
 
     @Override
     public boolean start(Game game) {

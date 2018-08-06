@@ -3,6 +3,7 @@ package com.egtinteractive.tic_tac_toe.games;
 import com.egtinteractive.tic_tac_toe.ai.AI;
 import com.egtinteractive.tic_tac_toe.boards.Board;
 import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
+import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
 import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
 import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.player.Player;
@@ -17,6 +18,7 @@ public abstract class Game {
     protected IO io;
     protected String current;
     protected int position;
+    protected DBQueries dbQueries;
 
     public Game(Board board, GameStates gameStates, DrawBoard drawBoard, AI ai, Player player) {
 	this.board = board;
@@ -25,10 +27,15 @@ public abstract class Game {
 	this.ai = ai;
 	this.player = player;
 	this.io = new ConsoleIO();
+	this.dbQueries = new DBQueries();
     }
 
     public GameStates getGameState() {
 	return gameState;
+    }
+
+    public DBQueries getDbQueries() {
+        return dbQueries;
     }
 
     public boolean start() {

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
+import com.egtinteractive.tic_tac_toe.machine.StateMachine;
 
 public enum GameStates implements GameMethods {
     START_GAME {
@@ -116,6 +117,7 @@ public enum GameStates implements GameMethods {
 	public boolean endGame(Game game) {
 	    if (!game.isWinner()) {
 		game.io.write("Equal game!");
+		game.arcadeGamesMachine.setState(StateMachine.STAND_BY);
 	    }
 	    return true;
 	}

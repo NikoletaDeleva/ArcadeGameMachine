@@ -6,10 +6,13 @@ import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
 import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
 import com.egtinteractive.tic_tac_toe.io.IO;
+import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
+import com.egtinteractive.tic_tac_toe.machine.Machine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
 public abstract class Game {
 
+    protected ArcadeGamesMachine arcadeGamesMachine;
     protected Board board;
     protected GameStates gameState;
     protected DrawBoard drawBoard;
@@ -28,6 +31,7 @@ public abstract class Game {
 	this.player = player;
 	this.io = new ConsoleIO();
 	this.dbQueries = new DBQueries();
+	this.arcadeGamesMachine = arcadeGamesMachine.getInstance();
     }
 
     public GameStates getGameState() {

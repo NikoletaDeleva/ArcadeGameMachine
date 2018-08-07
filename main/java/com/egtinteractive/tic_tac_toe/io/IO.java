@@ -7,4 +7,6 @@ public interface IO extends AutoCloseable {
     public String read();
     
     public int readPosition();
+    
+    public String readString();
 }

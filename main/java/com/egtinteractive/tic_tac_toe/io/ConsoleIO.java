@@ -21,6 +21,11 @@ public class ConsoleIO implements IO {
     }
 
     @Override
+    public String readString() {
+	return scanner.next();
+    }
+
+    @Override
     public int readPosition() {
 	return scanner.nextInt();
     }

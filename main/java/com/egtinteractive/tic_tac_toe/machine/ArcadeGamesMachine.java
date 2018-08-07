@@ -14,7 +14,7 @@ public class ArcadeGamesMachine {
     private Player player;
     private long totalMoney;
     private long coins;
-    private IO io;
+    protected IO io;
 
     private ArcadeGamesMachine() {
 	this.coins = 0L;
@@ -23,7 +23,9 @@ public class ArcadeGamesMachine {
 	this.io = new ConsoleIO();
 	this.gameType = null;
 	this.game = null;
-	loadHomePage();
+	loadHomePage();	
+	io.write("Put coins!");
+	putCoins(io.readPosition());
     }
 
     public static ArcadeGamesMachine getInstance() {
@@ -50,10 +52,10 @@ public class ArcadeGamesMachine {
 	}
 	sb.append(
 		"-------------------------------------------------" + System.lineSeparator() + System.lineSeparator());
-	System.out.println(sb);
+	io.write(sb.toString());
     }
 
-    void setState(final StateMachine state) {
+    public void setState(final StateMachine state) {
 	this.state = state;
     }
 
@@ -141,6 +143,15 @@ public class ArcadeGamesMachine {
 	    }
 	}
 	return null;
+    }
+    
+    public void select() {
+	String name = io.readString();
+	this.selectGame(name);
+    }
+    
+    public void play() {
+	this.playGame();
     }
 
 }

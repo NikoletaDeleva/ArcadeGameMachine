@@ -13,7 +13,10 @@ public enum StateMachine implements Machine {
 	    machine.addCoinsToMachine(coins);
 	    if (machine.getCoins() >= 10) {
 		machine.setState(StateMachine.SELECT_GAME);
+		machine.io.write("Selct game!");
+		machine.select();
 	    }
+
 	    return true;
 	}
 
@@ -43,6 +46,7 @@ public enum StateMachine implements Machine {
 
 	    machine.takeCustomerCoins(gameType);
 	    machine.setState(StateMachine.PLAY_GAME);
+	    machine.play();
 	    return true;
 
 	}

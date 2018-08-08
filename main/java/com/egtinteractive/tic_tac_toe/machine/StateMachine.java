@@ -7,16 +7,36 @@ public enum StateMachine implements Machine {
     STAND_BY {
 	@Override
 	public boolean putCoins(final ArcadeGamesMachine machine, long coins) {
-	    if (coins <= 0) {
-		return false;
-	    }
-	    machine.addCoinsToMachine(coins);
+
 	    if (machine.getCoins() >= 10) {
 		machine.setState(StateMachine.SELECT_GAME);
 		machine.io.write("Selct game!");
 		machine.select();
-	    }
+	    } else {
+		if (coins <= 0) {
+		    machine.io.write("Put coins!");
+		    String coinsToPut;
+		    do {
+			coinsToPut = machine.io.read();
+		    } while (!machine.isNumeric(coinsToPut));
 
+		    machine.putCoins(Integer.valueOf(coinsToPut));
+
+		} else {
+		    machine.addCoinsToMachine(coins);
+		    if (machine.getCoins() >= 10) {
+			putCoins(machine, 0);
+		    } else {
+			machine.io.write("Put coins!");
+			String coinsToPut;
+			do {
+			    coinsToPut = machine.io.read();
+			}while (!machine.isNumeric(coinsToPut));
+			
+			putCoins(machine, Integer.valueOf(coinsToPut) );
+		    }
+		}
+	    }
 	    return true;
 	}
 
@@ -37,18 +57,26 @@ public enum StateMachine implements Machine {
 	public boolean selectGame(final ArcadeGamesMachine machine, final Games gameType) {
 
 	    if (gameType == null) {
-		return false;
+		machine.io.write("Selct game!");
+		machine.select();
 	    }
 
 	    if (machine.getCoins() < gameType.getPrice()) {
-		return false;
+		machine.io.write("Put coins!");
+
+		String coinsToPut;
+		do {
+		    coinsToPut = machine.io.read();
+		} while (!machine.isNumeric(coinsToPut));
+
+		putCoins(machine, Integer.valueOf(coinsToPut));
+		selectGame(machine, gameType);
 	    }
 
 	    machine.takeCustomerCoins(gameType);
 	    machine.setState(StateMachine.PLAY_GAME);
 	    machine.play();
 	    return true;
-
 	}
 
 	@Override

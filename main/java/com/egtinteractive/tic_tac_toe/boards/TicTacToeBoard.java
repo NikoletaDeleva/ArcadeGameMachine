@@ -69,12 +69,17 @@ public class TicTacToeBoard implements Board {
 
     @Override
     public boolean isMoveValid(final int position) {
-	return position >= 0 && position <= SQUARE_SIZE;
+	return position >= 0 && position < SQUARE_SIZE;
     }
 
     @Override
     public boolean isFieldFree(int position) {
-	return this.getField(position).equals(" ");
+	if (isMoveValid(position)) {
+	    return this.getField(position).equals(" ");
+	}else {
+	    return false;
+	}
+	
     }
 
 }

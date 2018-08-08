@@ -1,9 +1,8 @@
-import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
+import com.egtinteractive.tic_tac_toe.loader.Loader;
 
 public class Demo {
 
     public static void main(String[] args) {
-	ArcadeGamesMachine machine = ArcadeGamesMachine.getInstance();
+	Loader loader = Loader.getInstance();
     }
-
 }

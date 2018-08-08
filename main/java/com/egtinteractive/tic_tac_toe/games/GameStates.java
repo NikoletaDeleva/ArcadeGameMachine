@@ -1,6 +1,5 @@
 package com.egtinteractive.tic_tac_toe.games;
 
-import java.sql.Connection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
@@ -17,6 +16,7 @@ public enum GameStates implements GameMethods {
 		game.io.write("AI starts first");
 		game.player.setSign("X");
 		game.ai.setSing("O");
+		game.io.write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
 		game.setPosition(game.ai.move(game.board));
 		game.moveAI(game.getPosition());
 		game.drawBoard.drawBoard(game.board);
@@ -24,6 +24,7 @@ public enum GameStates implements GameMethods {
 		game.io.write("Player starts first");
 		game.player.setSign("O");
 		game.ai.setSing("X");
+		game.io.write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
 	    }
 	    game.setGameState(GameStates.PLAYER);
 	    game.move();
@@ -65,13 +66,12 @@ public enum GameStates implements GameMethods {
 		return true;
 	    }
 
-	    int position;
-
+	    String position;
 	    do {
-		position = game.io.readPosition();
-	    } while (!game.board.isFieldFree(position));
+		position = game.io.read();
+	    } while (!game.arcadeGamesMachine.isNumeric(position) || !game.board.isFieldFree(Integer.valueOf(position)));
 
-	    game.setPosition(position);
+	    game.setPosition(Integer.valueOf(position));
 	    game.movePlayer(game.getPosition());
 	    game.drawBoard.drawBoard(game.board);
 
@@ -81,7 +81,7 @@ public enum GameStates implements GameMethods {
 
 		String name = game.io.read();
 
-		giveName(name,game);
+		giveName(name, game);
 
 		game.setGameState(GameStates.END_GAME);
 		return true;

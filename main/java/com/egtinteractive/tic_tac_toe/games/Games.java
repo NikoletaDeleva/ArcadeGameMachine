@@ -1,7 +1,7 @@
 package com.egtinteractive.tic_tac_toe.games;
 
 public enum Games {
-    TIC_TAC_TOE("TicTacToe", 10) {
+    TIC_TAC_TOE("TicTacToe", 15) {
 	@Override
 	public void load() {
 	    getGame().start();

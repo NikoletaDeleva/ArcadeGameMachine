@@ -19,16 +19,6 @@ public class ConsoleIO implements IO {
     public String read() {
 	return scanner.nextLine();
     }
-
-    @Override
-    public String readString() {
-	return scanner.next();
-    }
-
-    @Override
-    public int readPosition() {
-	return scanner.nextInt();
-    }
     
     @Override
     public void close() throws Exception {

@@ -20,8 +20,22 @@ public enum GameTypes {
 		    arcadeGamesMachine);
 	    return newTicTacToeGame;
 	}
-    };
+    },
 
+    DUMMY("Dummy", 0) {
+
+	@Override
+	public void load(ArcadeGamesMachine arcadeGamesMachine) {
+	    arcadeGamesMachine.endService();
+	    
+	}
+
+	@Override
+	public Game getGame(ArcadeGamesMachine arcadeGamesMachine) {
+	    return null;
+	}
+	
+    };
     private final String name;
     private final long price;
 

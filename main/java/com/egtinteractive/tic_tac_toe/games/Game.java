@@ -4,90 +4,96 @@ import com.egtinteractive.tic_tac_toe.ai.AI;
 import com.egtinteractive.tic_tac_toe.boards.Board;
 import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
-import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
-import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
-import com.egtinteractive.tic_tac_toe.machine.Machine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
 public abstract class Game {
 
-    protected ArcadeGamesMachine arcadeGamesMachine;
-    protected Board board;
-    protected GameStates gameState;
-    protected DrawBoard drawBoard;
-    protected AI ai;
-    protected Player player;
-    protected IO io;
-    protected String current;
-    protected int position;
-    protected DBQueries dbQueries;
+    private final ArcadeGamesMachine arcadeGamesMachine;
+    private final Board board;
+    private final DrawBoard drawBoard;
+    private final AI ai;
+    private final Player player;
+    private GameStates gameState;
+    private int position;
+    private DBQueries dbQueries;
 
-    public Game(Board board, GameStates gameStates, DrawBoard drawBoard, AI ai, Player player) {
+    public Game(final Board board, final GameStates gameStates, final DrawBoard drawBoard, final AI ai,
+	    final Player player, final ArcadeGamesMachine machine) {
 	this.board = board;
 	this.gameState = gameStates;
 	this.drawBoard = drawBoard;
 	this.ai = ai;
 	this.player = player;
-	this.io = new ConsoleIO();
 	this.dbQueries = new DBQueries();
-	this.arcadeGamesMachine = arcadeGamesMachine.getInstance();
-    }
-
-    public GameStates getGameState() {
-	return gameState;
-    }
-
-    public DBQueries getDbQueries() {
-        return dbQueries;
+	this.arcadeGamesMachine = machine;
     }
 
     public boolean start() {
-	return false;
+	return gameState.start(this);
     }
 
-    public void setGameState(GameStates gameState) {
-	this.gameState = gameState;
+    public void movePlayer(final int position) {
+	this.board.addMove(position, player.getSign());
     }
 
-    public Board getBoard() {
-	return board;
-    }
-
-    public void setBoard(Board board) {
-	this.board = board;
-    }
-
-    public void movePlayer(int position) {
-
-    }
-
-    public void moveAI(int position) {
-
-    }
-
-    public String getCurrent() {
-	return current;
+    public void moveAI(final int position) {
+	this.board.addMove(position, ai.getSign());
     }
 
     public void move() {
-
+	if (this.gameState == GameStates.AI) {
+	    this.gameState.moveAI(this);
+	} else {
+	    this.gameState.movePlayer(this);
+	}
     }
 
-    public void setPosition(int position) {
-
-    }
-
-    public int getPosition() {
-	return position;
+    public void end() {
+	this.gameState.endGame(this);
     }
 
     public boolean isWinner() {
 	return false;
     }
 
-    public void showResult() {
-	// TODO Auto-generated method stub
-	
+    public void setPosition(final int position) {
+	this.position = position;
+    }
+
+    public int getPosition() {
+	return this.position;
+    }
+
+    public void setGameState(GameStates gameState) {
+	this.gameState = gameState;
+    }
+
+    public GameStates getGameState() {
+	return this.gameState;
+    }
+
+    public ArcadeGamesMachine getArcadeGamesMachine() {
+	return this.arcadeGamesMachine;
+    }
+
+    public DrawBoard getDrawBoard() {
+	return this.drawBoard;
+    }
+
+    public AI getAi() {
+	return this.ai;
+    }
+
+    public Player getPlayer() {
+	return this.player;
+    }
+
+    public DBQueries getDbQueries() {
+	return this.dbQueries;
+    }
+
+    public Board getBoard() {
+	return this.board;
     }
 }

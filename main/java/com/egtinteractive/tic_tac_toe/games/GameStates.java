@@ -1,31 +1,41 @@
 package com.egtinteractive.tic_tac_toe.games;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
 import com.egtinteractive.tic_tac_toe.machine.StateMachine;
+import com.egtinteractive.tic_tac_toe.player.Player;
 
 public enum GameStates implements GameMethods {
     START_GAME {
 	@Override
-	public boolean start(Game game) {
+	public boolean start(final Game game) {
 
-	    game.drawBoard.drawBoard(game.board);
+	    game.getDrawBoard().drawBoard(game.getBoard());
 
 	    if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
-		game.io.write("AI starts first");
-		game.player.setSign("X");
-		game.ai.setSing("O");
-		game.io.write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
-		game.setPosition(game.ai.move(game.board));
+
+		game.getArcadeGamesMachine().getIo().write("AI starts first");
+
+		game.getPlayer().setSign("X");
+		game.getAi().setSing("O");
+
+		game.getArcadeGamesMachine().getIo().write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
+
+		game.setPosition(game.getAi().move(game.getBoard()));
 		game.moveAI(game.getPosition());
-		game.drawBoard.drawBoard(game.board);
+		game.getDrawBoard().drawBoard(game.getBoard());
+
 	    } else {
-		game.io.write("Player starts first");
-		game.player.setSign("O");
-		game.ai.setSing("X");
-		game.io.write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
+		game.getArcadeGamesMachine().getIo().write("Player starts first");
+
+		game.getPlayer().setSign("O");
+		game.getAi().setSing("X");
+
+		game.getArcadeGamesMachine().getIo().write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
 	    }
+	    
 	    game.setGameState(GameStates.PLAYER);
 	    game.move();
 	    return true;
@@ -33,64 +43,77 @@ public enum GameStates implements GameMethods {
     },
     AI {
 	@Override
-	public boolean moveAI(Game game) {
+	public boolean moveAI(final Game game) {
 	    if (game.getBoard().isFull()) {
 		game.setGameState(GameStates.END_GAME);
-		game.showResult();
+		game.end();
 		return true;
 	    }
 
-	    game.setPosition(game.ai.move(game.board));
+	    game.setPosition(game.getAi().move(game.getBoard()));
 	    game.moveAI(game.getPosition());
-	    game.drawBoard.drawBoard(game.board);
+	    game.getDrawBoard().drawBoard(game.getBoard());
 
 	    if (game.isWinner()) {
-		game.io.write("AI wins!");
+
+		game.getArcadeGamesMachine().getIo().write("AI wins!");
 		addGameWithNoPlayer(game);
 		game.setGameState(GameStates.END_GAME);
-		return true;
-	    }
+		game.end();
 
-	    game.setGameState(GameStates.PLAYER);
-	    game.move();
+	    } else {
+		if (game.getBoard().isFull()) {
+		    game.setGameState(GameStates.END_GAME);
+		    game.end();
+		} else {
+		    game.setGameState(GameStates.PLAYER);
+		    game.move();
+		}
+	    }
 	    return true;
 	}
     },
     PLAYER {
 
 	@Override
-	public boolean movePlayer(Game game) {
+	public boolean movePlayer(final Game game) {
 	    if (game.getBoard().isFull()) {
 		game.setGameState(GameStates.END_GAME);
-		game.showResult();
+		game.end();
 		return true;
 	    }
 
 	    String position;
 	    do {
-		position = game.io.read();
-	    } while (!game.arcadeGamesMachine.isNumeric(position) || !game.board.isFieldFree(Integer.valueOf(position)));
+		position = game.getArcadeGamesMachine().getIo().read();
+	    } while (!game.getArcadeGamesMachine().isNumeric(position)
+		    || !game.getBoard().isFieldFree(Integer.valueOf(position)));
 
 	    game.setPosition(Integer.valueOf(position));
 	    game.movePlayer(game.getPosition());
-	    game.drawBoard.drawBoard(game.board);
+	    game.getDrawBoard().drawBoard(game.getBoard());
 
 	    if (game.isWinner()) {
-		game.io.write("Player wins!");
-		game.io.write("Set your name:");
 
-		String name = game.io.read();
-
+		game.getArcadeGamesMachine().getIo().write("Player wins!");
+		game.getArcadeGamesMachine().getIo().write("Set your name:");
+		String name = game.getArcadeGamesMachine().getIo().read();
 		giveName(name, game);
 
 		game.setGameState(GameStates.END_GAME);
-		return true;
+		game.end();
+
+	    } else {
+		if (game.getBoard().isFull()) {
+		    game.setGameState(GameStates.END_GAME);
+		    game.end();
+		} else {
+		    game.setGameState(GameStates.AI);
+		    game.move();
+		}
+
 	    }
-
-	    game.setGameState(GameStates.AI);
-	    game.move();
 	    return true;
-
 	}
 
 	private void addGameWithPlayer(final String name, final Game game) {
@@ -114,32 +137,37 @@ public enum GameStates implements GameMethods {
     },
     END_GAME {
 	@Override
-	public boolean endGame(Game game) {
+	public boolean endGame(final Game game) {
 	    if (!game.isWinner()) {
-		game.io.write("Equal game!");
-		game.arcadeGamesMachine.setState(StateMachine.STAND_BY);
+		game.getArcadeGamesMachine().getIo().write("Equal game!");
 	    }
+	    game.getArcadeGamesMachine().getIo().listAll(showResult(game));
+	    game.getArcadeGamesMachine().setState(StateMachine.STAND_BY);
+	    game.getArcadeGamesMachine().turnOn();
 	    return true;
 	}
     };
 
-    public void addGameWithNoPlayer(final Game game) {
-	game.dbQueries.addGameWithNoPlayer(game.getGameState().toString());
+    void addGameWithNoPlayer(final Game game) {
+	game.getDbQueries().addGameWithNoPlayer(game.getGameState().toString());
+    }
 
+    List<Player> showResult(final Game game) {
+	return game.getDbQueries().showTopThreePlayers();
     }
 
     @Override
-    public boolean start(Game game) {
+    public boolean start(final Game game) {
 	return false;
     }
 
     @Override
-    public boolean moveAI(Game game) {
+    public boolean moveAI(final Game game) {
 	return false;
     }
 
     @Override
-    public boolean movePlayer(Game game) {
+    public boolean movePlayer(final Game game) {
 	return false;
     }
 

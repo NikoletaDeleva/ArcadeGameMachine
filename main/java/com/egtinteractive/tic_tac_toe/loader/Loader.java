@@ -3,17 +3,17 @@ package com.egtinteractive.tic_tac_toe.loader;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 
 public class Loader {
-    private static Loader loader;
+    private static Loader loader = null;
     private ArcadeGamesMachine machine;
 
-    private Loader() {
-	this.machine = machine.getInstance();
+    private Loader(ArcadeGamesMachine machine) {
+	this.machine = machine;
 	this.load();
     }
 
-    public static Loader getInstance() {
+    public static Loader getInstance(ArcadeGamesMachine machine) {
 	if (loader == null) {
-	    loader = new Loader();
+	    loader = new Loader(machine);
 	}
 	return loader;
     }

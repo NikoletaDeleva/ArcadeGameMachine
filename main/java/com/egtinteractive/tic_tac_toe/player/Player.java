@@ -1,13 +1,13 @@
 package com.egtinteractive.tic_tac_toe.player;
 
 public class Player {
-    private  String name;
+    private String name;
     private int points;
     private String sign;
 
-    public Player() {
-	this.name = null;
-	this.points = 0;
+    public Player(String name, int points) {
+	this.name = name;
+	this.points = points;
     }
 
     public String getName() {
@@ -26,4 +26,8 @@ public class Player {
 	this.sign = sign;
     }
 
+    @Override
+    public String toString() {
+	return (this.name + "  " + this.points);
+    }
 }

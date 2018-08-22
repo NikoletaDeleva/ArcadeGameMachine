@@ -1,12 +1,14 @@
 package com.egtinteractive.tic_tac_toe.db_conection;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class DBCredentials {
-    private final static String CONFIG_PATH = "src/main/resources/configuration.properties";
+    private final static String CONFIG_PATH = "src" + File.separator + "main" + File.separator + "resources"
+	    + File.separator + "configuration.properties";
     private final String URL;
     private final String USER;
     private final String PASSWORD;
@@ -15,9 +17,11 @@ public class DBCredentials {
 	final Properties properties = getCredentials();
 	this.USER = properties.getProperty("dbuser");
 	this.PASSWORD = properties.getProperty("dbpassword");
-	final String db = properties.getProperty("database");
-	this.URL = "jdbc:mysql://" + db
-		+ ":3306/tictactoe?createDatabaseIfNotExist=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	final String host = properties.getProperty("host");
+	final String port = properties.getProperty("port");
+	final String database = properties.getProperty("database");
+
+	this.URL = "jdbc:mysql:" + File.separator + File.separator + host + ":" + port + File.separator + database;
     }
 
     private Properties getCredentials() {

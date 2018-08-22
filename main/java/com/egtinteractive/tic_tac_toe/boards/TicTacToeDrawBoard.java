@@ -17,8 +17,8 @@ public class TicTacToeDrawBoard implements DrawBoard {
 	final int size = fields.length;
 
 	for (int index = 0; index < size; index++) {
-	    sb.append("  ").append(fields[index][0]).append(" | ").append(fields[index][1]).append(" |  ").append(fields[index][2])
-		    .append(System.lineSeparator());
+	    sb.append("  ").append(fields[index][0]).append(" | ").append(fields[index][1]).append(" |  ")
+		    .append(fields[index][2]).append(System.lineSeparator());
 	    if (index != size - 1)
 		sb.append("-------------").append(System.lineSeparator());
 	}

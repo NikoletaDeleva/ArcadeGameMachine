@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    public static Connection getConnection(final String url, final String user, final String pass) {
+    public static Connection getConnection(final DBCredentials credentials) {
 	try {
-	    return DriverManager.getConnection(url, user, pass);
+	    return DriverManager.getConnection(credentials.getURL(), credentials.getUSER(), credentials.getPASSWORD());
 	} catch (SQLException e) {
 	    throw new RuntimeException(e);
 	}

@@ -18,6 +18,4 @@ public interface Board {
 
     public boolean isMoveValid(final int position);
 
-    public int getSquareSize();
-
 }

@@ -4,39 +4,29 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
-import com.egtinteractive.tic_tac_toe.games.Games;
-import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
+import com.egtinteractive.tic_tac_toe.games.GameTypes;
 import com.egtinteractive.tic_tac_toe.io.IO;
-import com.egtinteractive.tic_tac_toe.player.Player;
 
 public class ArcadeGamesMachine {
-    private static ArcadeGamesMachine arcadeGamesMachineInstance = null;
     private StateMachine state;
-    private Games gameType;
+    private GameTypes gameType;
     private Game game;
-    private Player player;
     private long totalMoney;
     private long coins;
-    protected IO io;
+    private final IO io;
 
-    private ArcadeGamesMachine() {
+    public ArcadeGamesMachine(final IO io) {
 	this.coins = 0L;
 	this.totalMoney = 0L;
 	this.state = StateMachine.STAND_BY;
-	this.io = new ConsoleIO();
+	this.io = io;
 	this.gameType = null;
 	this.game = null;
     }
 
-    public static ArcadeGamesMachine getInstance() {
-	if (arcadeGamesMachineInstance == null) {
-	    arcadeGamesMachineInstance = new ArcadeGamesMachine();
-	}
-	return arcadeGamesMachineInstance;
-    }
-
     public void waitToTurnOn() {
 	String wait = io.read();
+
 	if (wait.trim().toLowerCase().equals("turn on")) {
 	    this.turnOnMachine();
 	} else {
@@ -53,8 +43,12 @@ public class ArcadeGamesMachine {
 	do {
 	    coinsToPut = io.read();
 	} while (!isNumeric(coinsToPut));
-	
+
 	this.putCoins(Integer.valueOf(coinsToPut));
+    }
+
+    public void turnOn() {
+	this.turnOnMachine();
     }
 
     public void loadHomePage() {
@@ -65,7 +59,7 @@ public class ArcadeGamesMachine {
 	sb.append(String.format("%s %30s" + System.lineSeparator() + "-------------------------------------------------"
 		+ System.lineSeparator(), "GAME:", "PRICE:"));
 
-	for (Games game : Games.values()) {
+	for (GameTypes game : GameTypes.values()) {
 
 	    final String name = game.getName();
 	    final long price = game.getPrice();
@@ -91,7 +85,7 @@ public class ArcadeGamesMachine {
 	this.coins += coins;
     }
 
-    void takeCustomerCoins(final Games specificGame) {
+    void takeCustomerCoins(final GameTypes specificGame) {
 	this.coins -= specificGame.getPrice();
 	this.setTotalMoney(specificGame.getPrice());
     }
@@ -102,31 +96,14 @@ public class ArcadeGamesMachine {
 	return moneyToReturn;
     }
 
-    public long getGamePrice() {
-	return gameType.getPrice();
-    }
-
-    private boolean playGame() {
-	return state.playGame(this, gameType, game);
-    }
-
-    private Games selectGame(final String name) {
+    private GameTypes selectGame(final String name) {
 	this.gameType = getGameByName(name);
 
 	boolean checkIF = this.state.selectGame(this, gameType);
 
 	if (checkIF) {
-	    this.game = gameType.getGame();
+	    this.game = gameType.getGame(this);
 	    return gameType;
-	}
-	return null;
-    }
-
-    private Games getGameByName(String name) {
-	for (Games game : Games.values()) {
-	    if (game.getName().trim().toLowerCase().equals(name.trim().toLowerCase())) {
-		return game;
-	    }
 	}
 	return null;
     }
@@ -136,8 +113,21 @@ public class ArcadeGamesMachine {
 	this.selectGame(name);
     }
 
+    private GameTypes getGameByName(final String name) {
+	for (GameTypes game : GameTypes.values()) {
+	    if (game.getName().trim().toLowerCase().equals(name.trim().toLowerCase())) {
+		return game;
+	    }
+	}
+	return null;
+    }
+
     public void play() {
 	this.playGame();
+    }
+
+    private boolean playGame() {
+	return state.playGame(this, gameType, game);
     }
 
     public long service() {
@@ -146,43 +136,30 @@ public class ArcadeGamesMachine {
 	return moneyReturn;
     }
 
-    public boolean endService() {
-	return this.state.endService(this);
-    }
-
-    public Games getGame() {
-	return gameType;
-    }
-
-    public void setGame(Games game) {
-	this.gameType = game;
+    public long endService() {
+	long takeTotalMoney = getTotalMoney();
+	this.totalMoney = 0L;
+	this.state.endService(this);
+	return takeTotalMoney;
     }
 
     public void setState(final StateMachine state) {
 	this.state = state;
     }
 
-    public StateMachine getState() {
-	return this.state;
-    }
-
-    public Player getPlayer() {
-	return player;
-    }
-
-    public void setPlayer(Player player) {
-	this.player = player;
-    }
-
-    public long getTotalMoney() {
-	return totalMoney;
-    }
-
     public void setTotalMoney(long totalGameMoney) {
 	this.totalMoney += totalGameMoney;
     }
 
-    public static boolean isNumeric(final String str) {
+    private long getTotalMoney() {
+	return totalMoney;
+    }
+
+    public IO getIo() {
+	return io;
+    }
+
+    public boolean isNumeric(final String str) {
 	if (str.equals("")) {
 	    return false;
 	}

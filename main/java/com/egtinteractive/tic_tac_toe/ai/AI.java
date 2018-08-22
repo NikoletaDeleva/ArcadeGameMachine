@@ -4,6 +4,8 @@ import com.egtinteractive.tic_tac_toe.boards.Board;
 
 public interface AI {
     public Integer move(final Board board);
+
     public void setSing(String sing);
+
     public String getSign();
 }

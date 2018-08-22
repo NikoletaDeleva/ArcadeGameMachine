@@ -1,7 +1,7 @@
 package com.egtinteractive.tic_tac_toe.machine;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
-import com.egtinteractive.tic_tac_toe.games.Games;
+import com.egtinteractive.tic_tac_toe.games.GameTypes;
 
 public enum StateMachine implements Machine {
     STAND_BY {
@@ -10,14 +10,14 @@ public enum StateMachine implements Machine {
 
 	    if (machine.getCoins() >= 10) {
 		machine.setState(StateMachine.SELECT_GAME);
-		machine.io.write("Selct game!");
+		machine.getIo().write("Selct game!");
 		machine.select();
 	    } else {
 		if (coins <= 0) {
-		    machine.io.write("Put coins!");
+		    machine.getIo().write("Put coins!");
 		    String coinsToPut;
 		    do {
-			coinsToPut = machine.io.read();
+			coinsToPut = machine.getIo().read();
 		    } while (!machine.isNumeric(coinsToPut));
 
 		    machine.putCoins(Integer.valueOf(coinsToPut));
@@ -27,13 +27,13 @@ public enum StateMachine implements Machine {
 		    if (machine.getCoins() >= 10) {
 			putCoins(machine, 0);
 		    } else {
-			machine.io.write("Put coins!");
+			machine.getIo().write("Put coins!");
 			String coinsToPut;
 			do {
-			    coinsToPut = machine.io.read();
-			}while (!machine.isNumeric(coinsToPut));
-			
-			putCoins(machine, Integer.valueOf(coinsToPut) );
+			    coinsToPut = machine.getIo().read();
+			} while (!machine.isNumeric(coinsToPut));
+
+			putCoins(machine, Integer.valueOf(coinsToPut));
 		    }
 		}
 	    }
@@ -49,24 +49,34 @@ public enum StateMachine implements Machine {
     SELECT_GAME {
 	@Override
 	public boolean putCoins(final ArcadeGamesMachine machine, long coins) {
-	    machine.addCoinsToMachine(coins);
+	    if (coins <= 0) {
+		machine.getIo().write("Put coins!");
+		String coinsToPut;
+		do {
+		    coinsToPut = machine.getIo().read();
+		} while (!machine.isNumeric(coinsToPut));
+
+		machine.putCoins(Integer.valueOf(coinsToPut));
+	    } else {
+		machine.addCoinsToMachine(coins);
+	    }
 	    return true;
 	}
 
 	@Override
-	public boolean selectGame(final ArcadeGamesMachine machine, final Games gameType) {
+	public boolean selectGame(final ArcadeGamesMachine machine, final GameTypes gameType) {
 
 	    if (gameType == null) {
-		machine.io.write("Selct game!");
+		machine.getIo().write("Selct game!");
 		machine.select();
 	    }
 
 	    if (machine.getCoins() < gameType.getPrice()) {
-		machine.io.write("Put coins!");
+		machine.getIo().write("Put coins!");
 
 		String coinsToPut;
 		do {
-		    coinsToPut = machine.io.read();
+		    coinsToPut = machine.getIo().read();
 		} while (!machine.isNumeric(coinsToPut));
 
 		putCoins(machine, Integer.valueOf(coinsToPut));
@@ -80,13 +90,6 @@ public enum StateMachine implements Machine {
 	}
 
 	@Override
-	public boolean returnMoney(final ArcadeGamesMachine machine) {
-	    machine.returnCoinsToCustomer();
-	    machine.setState(StateMachine.STAND_BY);
-	    return true;
-	}
-
-	@Override
 	public boolean service(final ArcadeGamesMachine machine) {
 	    machine.setState(StateMachine.SERVICE);
 	    return true;
@@ -95,11 +98,13 @@ public enum StateMachine implements Machine {
     },
     PLAY_GAME {
 	@Override
-	public boolean playGame(final ArcadeGamesMachine machine, final Games gameType, final Game game) {
+	public boolean playGame(final ArcadeGamesMachine machine, final GameTypes gameType, final Game game) {
 	    if (machine.getCoins() > 0) {
+		final long coinsToReturn = machine.returnCoinsToCustomer();
+		machine.getIo().write("Return coins : " + coinsToReturn);
 		machine.returnCoinsToCustomer();
 	    }
-	    gameType.load();
+	    gameType.load(machine);
 	    return true;
 	}
 
@@ -123,12 +128,12 @@ public enum StateMachine implements Machine {
     }
 
     @Override
-    public boolean selectGame(final ArcadeGamesMachine machine, final Games gameType) {
+    public boolean selectGame(final ArcadeGamesMachine machine, final GameTypes gameType) {
 	return false;
     }
 
     @Override
-    public boolean playGame(final ArcadeGamesMachine machine, final Games gameType, final Game game) {
+    public boolean playGame(final ArcadeGamesMachine machine, final GameTypes gameType, final Game game) {
 	return false;
     }
 
@@ -139,11 +144,6 @@ public enum StateMachine implements Machine {
 
     @Override
     public boolean endService(final ArcadeGamesMachine machine) {
-	return false;
-    }
-
-    @Override
-    public boolean returnMoney(final ArcadeGamesMachine machine) {
 	return false;
     }
 

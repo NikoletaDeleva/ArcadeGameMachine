@@ -18,7 +18,7 @@ public enum StateMachine implements Machine {
 		    String coinsToPut;
 		    do {
 			coinsToPut = machine.getIo().read();
-		    } while (!machine.isNumeric(coinsToPut));
+		    } while (!machine.getUtils().isNumeric(coinsToPut));
 
 		    machine.putCoins(Integer.valueOf(coinsToPut));
 
@@ -31,7 +31,7 @@ public enum StateMachine implements Machine {
 			String coinsToPut;
 			do {
 			    coinsToPut = machine.getIo().read();
-			} while (!machine.isNumeric(coinsToPut));
+			} while (!machine.getUtils().isNumeric(coinsToPut));
 
 			putCoins(machine, Integer.valueOf(coinsToPut));
 		    }
@@ -54,7 +54,7 @@ public enum StateMachine implements Machine {
 		String coinsToPut;
 		do {
 		    coinsToPut = machine.getIo().read();
-		} while (!machine.isNumeric(coinsToPut));
+		} while (!machine.getUtils().isNumeric(coinsToPut));
 
 		machine.putCoins(Integer.valueOf(coinsToPut));
 	    } else {
@@ -77,7 +77,7 @@ public enum StateMachine implements Machine {
 		String coinsToPut;
 		do {
 		    coinsToPut = machine.getIo().read();
-		} while (!machine.isNumeric(coinsToPut));
+		} while (!machine.getUtils().isNumeric(coinsToPut));
 
 		putCoins(machine, Integer.valueOf(coinsToPut));
 		selectGame(machine, gameType);

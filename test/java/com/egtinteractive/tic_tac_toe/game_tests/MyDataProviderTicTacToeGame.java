@@ -14,6 +14,6 @@ public class MyDataProviderTicTacToeGame {
 	final IO io = new AnotherDumpIO();
 
 	return new Object[][] { { new TicTacToe(new TicTacToeBoard(), new TicTacToeDrawBoard(io), new AITicTacToe(),
-		new Player(null, 0), null) } };
+		new Player(null, 0), io , null) } };
     }
 }

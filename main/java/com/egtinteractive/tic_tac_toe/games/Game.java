@@ -4,12 +4,14 @@ import com.egtinteractive.tic_tac_toe.ai.AI;
 import com.egtinteractive.tic_tac_toe.boards.Board;
 import com.egtinteractive.tic_tac_toe.boards.DrawBoard;
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
+import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 import com.egtinteractive.tic_tac_toe.player.Player;
+import com.egtinteractive.tic_tac_toe.utils.Utils;
 
 public abstract class Game {
 
-    private final ArcadeGamesMachine arcadeGamesMachine;
+    private final IO io;
     private final Board board;
     private final DrawBoard drawBoard;
     private final AI ai;
@@ -17,16 +19,20 @@ public abstract class Game {
     private GameStates gameState;
     private int position;
     private DBQueries dbQueries;
+    private Utils utils;
+    private ArcadeGamesMachine machine;
 
-    public Game(final Board board, final DrawBoard drawBoard, final AI ai,
-	    final Player player, final ArcadeGamesMachine machine) {
+    public Game(final Board board, final DrawBoard drawBoard, final AI ai, final Player player, final IO io,
+	    ArcadeGamesMachine machine) {
 	this.board = board;
 	this.gameState = GameStates.START_GAME;
 	this.drawBoard = drawBoard;
 	this.ai = ai;
 	this.player = player;
 	this.dbQueries = new DBQueries();
-	this.arcadeGamesMachine = machine;
+	this.io = io;
+	this.utils = new Utils();
+	this.machine = machine;
     }
 
     public boolean start() {
@@ -73,8 +79,8 @@ public abstract class Game {
 	return this.gameState;
     }
 
-    public ArcadeGamesMachine getArcadeGamesMachine() {
-	return this.arcadeGamesMachine;
+    public IO getIO() {
+	return this.io;
     }
 
     public DrawBoard getDrawBoard() {
@@ -96,4 +102,13 @@ public abstract class Game {
     public Board getBoard() {
 	return this.board;
     }
+
+    public Utils getUtils() {
+	return utils;
+    }
+
+    public ArcadeGamesMachine getMachine() {
+	return machine;
+    }
+
 }

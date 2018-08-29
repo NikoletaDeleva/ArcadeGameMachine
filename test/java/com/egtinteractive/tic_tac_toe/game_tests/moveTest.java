@@ -7,6 +7,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.egtinteractive.tic_tac_toe.games.GameStates;
 import com.egtinteractive.tic_tac_toe.games.TicTacToe;
 
 public class moveTest {
@@ -16,7 +17,7 @@ public class moveTest {
     }
 
     @Test(dataProvider = "game")
-    public void testOne(final TicTacToe game) {
+    public void checkIfPutSign(final TicTacToe game) {
 	for (int i = 0; i < 9; i++) {
 	    game.getPlayer().setSign("X");
 	    game.movePlayer(i);
@@ -26,65 +27,75 @@ public class moveTest {
     }
 
     @Test(dataProvider = "game")
-    public void playMove(final TicTacToe game) {
+    public void isWinnerRow(final TicTacToe game) {
 	game.getPlayer().setSign("O");
 	game.getAi().setSing("X");
 
-	game.movePlayer(0);
-	game.moveAI(3);
-	game.movePlayer(1);
-	game.moveAI(7);
-	game.movePlayer(2);
+	for (int i = 0; i <= 3; i++) {
+	    game.movePlayer(i);
+	}
+
+	for (int i = 3; i <= 8; i += 5) {
+	    game.moveAI(i);
+	}
+
+	assertTrue(game.isWinner());
+    }
+
+    @Test(dataProvider = "game")
+    public void isWinnerCol(final TicTacToe game) {
+	game.getPlayer().setSign("O");
+	game.getAi().setSing("X");
+
+	for (int i = 0; i <= 8; i += 3) {
+	    game.movePlayer(i);
+	}
+
+	for (int i = 1; i <= 8; i += 5) {
+	    game.moveAI(i);
+	}
 
 	assertTrue(game.isWinner());
 
     }
 
     @Test(dataProvider = "game")
-    public void playMoveTwo(final TicTacToe game) {
+    public void isWinnerDiagonal(final TicTacToe game) {
 	game.getPlayer().setSign("O");
 	game.getAi().setSing("X");
 
-	game.movePlayer(0);
-	game.moveAI(3);
-	game.movePlayer(4);
-	game.moveAI(7);
-	game.movePlayer(8);
+	for (int i = 0; i <= 8; i += 4) {
+	    game.movePlayer(i);
+	}
+
+	for (int i = 1; i <= 8; i += 5) {
+	    game.moveAI(i);
+	}
 
 	assertTrue(game.isWinner());
 
     }
 
     @Test(dataProvider = "game")
-    public void playMoveThree(final TicTacToe game) {
+    public void isNotWinner(final TicTacToe game) {
 	game.getPlayer().setSign("O");
 	game.getAi().setSing("X");
 
-	game.movePlayer(0);
-	game.moveAI(2);
-	game.movePlayer(3);
-	game.moveAI(7);
-	game.movePlayer(6);
+	for (int i = 0; i <= 1; i++) {
+	    game.movePlayer(i);
+	}
 
-	assertTrue(game.isWinner());
+	for (int i = 2; i <= 4; i++) {
+	    game.moveAI(i);
+	}
 
-    }
+	for (int i = 5; i <= 7; i++) {
+	    game.movePlayer(i);
+	}
 
-    @Test(dataProvider = "game")
-    public void playMoveFour(final TicTacToe game) {
-	game.getPlayer().setSign("O");
-	game.getAi().setSing("X");
-
-	game.movePlayer(0);
-	game.moveAI(2);
-	game.movePlayer(1);
-	game.moveAI(3);
-	game.movePlayer(5);
-	game.moveAI(4);
-	game.movePlayer(6);
 	game.moveAI(8);
-	game.movePlayer(7);
 
 	assertFalse(game.isWinner());
     }
+
 }

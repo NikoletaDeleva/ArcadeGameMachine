@@ -17,7 +17,8 @@ public enum GameTypes {
 	public Game getGame(final ArcadeGamesMachine arcadeGamesMachine) {
 	    TicTacToe newTicTacToeGame = new TicTacToe(new TicTacToeBoard(),
 		    new TicTacToeDrawBoard(arcadeGamesMachine.getIo()), new AITicTacToe(), new Player(null, 0),
-		    arcadeGamesMachine);
+		    arcadeGamesMachine.getIo(), arcadeGamesMachine);
+
 	    return newTicTacToeGame;
 	}
     },
@@ -33,8 +34,9 @@ public enum GameTypes {
 	public Game getGame(ArcadeGamesMachine arcadeGamesMachine) {
 	    return null;
 	}
-	
+
     };
+    
     private final String name;
     private final long price;
 

@@ -1,11 +1,9 @@
 package com.egtinteractive.tic_tac_toe.machine;
 
-import java.text.NumberFormat;
-import java.text.ParsePosition;
-
 import com.egtinteractive.tic_tac_toe.games.Game;
 import com.egtinteractive.tic_tac_toe.games.GameTypes;
 import com.egtinteractive.tic_tac_toe.io.IO;
+import com.egtinteractive.tic_tac_toe.utils.Utils;
 
 public class ArcadeGamesMachine {
     private StateMachine state;
@@ -14,6 +12,7 @@ public class ArcadeGamesMachine {
     private long totalMoney;
     private long coins;
     private final IO io;
+    private final Utils utils;
 
     public ArcadeGamesMachine(final IO io) {
 	this.coins = 0L;
@@ -22,6 +21,7 @@ public class ArcadeGamesMachine {
 	this.io = io;
 	this.gameType = null;
 	this.game = null;
+	this.utils = new Utils();
     }
 
     public void waitToTurnOn() {
@@ -43,7 +43,7 @@ public class ArcadeGamesMachine {
 	String coinsToPut;
 	do {
 	    coinsToPut = io.read();
-	} while (!isNumeric(coinsToPut));
+	} while (!utils.isNumeric(coinsToPut));
 
 	this.putCoins(Integer.valueOf(coinsToPut));
     }
@@ -160,13 +160,8 @@ public class ArcadeGamesMachine {
 	return io;
     }
 
-    public boolean isNumeric(final String str) {
-	if (str.equals("")) {
-	    return false;
-	}
-	final NumberFormat formatter = NumberFormat.getInstance();
-	final ParsePosition pos = new ParsePosition(0);
-	formatter.parse(str, pos);
-	return str.length() == pos.getIndex();
+    public Utils getUtils() {
+	return utils;
     }
+
 }

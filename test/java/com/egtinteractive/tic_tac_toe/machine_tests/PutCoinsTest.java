@@ -2,9 +2,6 @@ package com.egtinteractive.tic_tac_toe.machine_tests;
 
 import static org.testng.Assert.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -18,37 +15,23 @@ public class PutCoinsTest {
     }
 
     @Test(dataProvider = "arcadeGameMachine")
-    public void f(final ArcadeGamesMachine machine) {
+    public void coinsInMachine(final ArcadeGamesMachine machine) {
+	final long coinsPut = machine.putCoins(20);
 
-	try {
-	    final long coinsPut = machine.putCoins(20);
+	final long returnCoins = machine.service();
 
-	    Method methodTwo = machine.getClass().getDeclaredMethod("getCoins", null);
-	    methodTwo.setAccessible(true);
-	    
-	    assertEquals(coinsPut, methodTwo.invoke(machine));
+	assertEquals(coinsPut, returnCoins);
 
-	} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-		| InvocationTargetException e) {
-	    e.printStackTrace();
-	}
     }
 
     @Test(dataProvider = "arcadeGameMachine")
-    public void fOne(final ArcadeGamesMachine machine) {
+    public void coinsInMachineIfAddNegative(final ArcadeGamesMachine machine) {
 
-	try {
-	    final long coinsPut = machine.putCoins(20);
-	    machine.putCoins(-5);
+	final long coinsPut = machine.putCoins(20);
+	machine.putCoins(-5);
 
-	    Method methodTwo = machine.getClass().getDeclaredMethod("getCoins", null);
-	    methodTwo.setAccessible(true);
-	    
-	    assertEquals(coinsPut, methodTwo.invoke(machine));
+	final long returnCoins = machine.service();
 
-	} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-		| InvocationTargetException e) {
-	    e.printStackTrace();
-	}
+	assertEquals(coinsPut, returnCoins);
     }
 }

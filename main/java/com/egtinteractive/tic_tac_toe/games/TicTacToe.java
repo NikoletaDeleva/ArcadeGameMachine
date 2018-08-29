@@ -3,14 +3,15 @@ package com.egtinteractive.tic_tac_toe.games;
 import com.egtinteractive.tic_tac_toe.ai.AITicTacToe;
 import com.egtinteractive.tic_tac_toe.boards.TicTacToeBoard;
 import com.egtinteractive.tic_tac_toe.boards.TicTacToeDrawBoard;
+import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
 public class TicTacToe extends Game {
 
     public TicTacToe(TicTacToeBoard ticTacToeBoard, TicTacToeDrawBoard ticTacToeDrawBoard, AITicTacToe aiTicTacToe,
-	    Player player, ArcadeGamesMachine arcadeGamesMachine) {
-	super(ticTacToeBoard, ticTacToeDrawBoard, aiTicTacToe, player, arcadeGamesMachine);
+	    Player player, IO io, ArcadeGamesMachine machine) {
+	super(ticTacToeBoard, ticTacToeDrawBoard, aiTicTacToe, player, io, machine);
     }
 
     @Override

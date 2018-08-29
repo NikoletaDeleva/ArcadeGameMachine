@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
-import com.egtinteractive.tic_tac_toe.machine.StateMachine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
 public enum GameStates implements GameMethods {
@@ -21,7 +20,8 @@ public enum GameStates implements GameMethods {
 		game.getPlayer().setSign("X");
 		game.getAi().setSing("O");
 
-		game.getArcadeGamesMachine().getIo().write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
+		game.getArcadeGamesMachine().getIo()
+			.write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
 
 		game.setPosition(game.getAi().move(game.getBoard()));
 		game.moveAI(game.getPosition());
@@ -33,9 +33,10 @@ public enum GameStates implements GameMethods {
 		game.getPlayer().setSign("O");
 		game.getAi().setSing("X");
 
-		game.getArcadeGamesMachine().getIo().write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
+		game.getArcadeGamesMachine().getIo()
+			.write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
 	    }
-	    
+
 	    game.setGameState(GameStates.PLAYER);
 	    game.move();
 	    return true;
@@ -142,7 +143,6 @@ public enum GameStates implements GameMethods {
 		game.getArcadeGamesMachine().getIo().write("Equal game!");
 	    }
 	    game.getArcadeGamesMachine().getIo().listAll(showResult(game));
-	    game.getArcadeGamesMachine().setState(StateMachine.STAND_BY);
 	    game.getArcadeGamesMachine().turnOn();
 	    return true;
 	}

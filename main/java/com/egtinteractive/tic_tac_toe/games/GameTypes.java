@@ -27,7 +27,6 @@ public enum GameTypes {
 	@Override
 	public void load(ArcadeGamesMachine arcadeGamesMachine) {
 	    arcadeGamesMachine.endService();
-	    
 	}
 
 	@Override

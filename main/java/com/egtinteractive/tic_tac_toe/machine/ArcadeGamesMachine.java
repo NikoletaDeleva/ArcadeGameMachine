@@ -35,6 +35,7 @@ public class ArcadeGamesMachine {
     }
 
     private void turnOnMachine() {
+	this.setState(StateMachine.STAND_BY);
 	this.loadHomePage();
 
 	this.io.write("Put coins!");
@@ -143,7 +144,7 @@ public class ArcadeGamesMachine {
 	return takeTotalMoney;
     }
 
-    public void setState(final StateMachine state) {
+    void setState(final StateMachine state) {
 	this.state = state;
     }
 

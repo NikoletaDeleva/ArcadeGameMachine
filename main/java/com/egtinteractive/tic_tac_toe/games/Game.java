@@ -18,10 +18,10 @@ public abstract class Game {
     private int position;
     private DBQueries dbQueries;
 
-    public Game(final Board board, final GameStates gameStates, final DrawBoard drawBoard, final AI ai,
+    public Game(final Board board, final DrawBoard drawBoard, final AI ai,
 	    final Player player, final ArcadeGamesMachine machine) {
 	this.board = board;
-	this.gameState = gameStates;
+	this.gameState = GameStates.START_GAME;
 	this.drawBoard = drawBoard;
 	this.ai = ai;
 	this.player = player;

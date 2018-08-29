@@ -8,11 +8,11 @@ import com.egtinteractive.tic_tac_toe.player.Player;
 
 public class TicTacToe extends Game {
 
-    public TicTacToe(TicTacToeBoard ticTacToeBoard, TicTacToeDrawBoard ticTacToeDrawBoard, AITicTacToe aiTicTacToe, Player player, ArcadeGamesMachine arcadeGamesMachine ) {
-	super(ticTacToeBoard, GameStates.START_GAME, ticTacToeDrawBoard, aiTicTacToe,
-		player, arcadeGamesMachine);
+    public TicTacToe(TicTacToeBoard ticTacToeBoard, TicTacToeDrawBoard ticTacToeDrawBoard, AITicTacToe aiTicTacToe,
+	    Player player, ArcadeGamesMachine arcadeGamesMachine) {
+	super(ticTacToeBoard, ticTacToeDrawBoard, aiTicTacToe, player, arcadeGamesMachine);
     }
- 
+
     @Override
     public boolean isWinner() {
 	return (checkRows() || checkColumns() || checkDiagonals());

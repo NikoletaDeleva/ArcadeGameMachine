@@ -1,3 +1,4 @@
+package com.egtinteractive.tic_tac_toe.launcher;
 import com.egtinteractive.tic_tac_toe.io.ConsoleIO;
 import com.egtinteractive.tic_tac_toe.loader.Loader;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;

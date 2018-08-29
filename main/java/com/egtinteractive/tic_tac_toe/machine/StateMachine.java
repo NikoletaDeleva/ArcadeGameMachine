@@ -2,6 +2,7 @@ package com.egtinteractive.tic_tac_toe.machine;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
 import com.egtinteractive.tic_tac_toe.games.GameTypes;
+import com.egtinteractive.tic_tac_toe.games.GamesLoader;
 
 public enum StateMachine implements Machine {
     STAND_BY {
@@ -98,7 +99,7 @@ public enum StateMachine implements Machine {
     },
     PLAY_GAME {
 	@Override
-	public boolean playGame(final ArcadeGamesMachine machine, final GameTypes gameType, final Game game) {
+	public boolean playGame(final ArcadeGamesMachine machine, final GamesLoader gameType, final Game game) {
 	    if (machine.getCoins() > 0) {
 		final long coinsToReturn = machine.returnCoinsToCustomer();
 		machine.getIo().write("Return coins : " + coinsToReturn);
@@ -133,7 +134,7 @@ public enum StateMachine implements Machine {
     }
 
     @Override
-    public boolean playGame(final ArcadeGamesMachine machine, final GameTypes gameType, final Game game) {
+    public boolean playGame(final ArcadeGamesMachine machine, final GamesLoader gameType, final Game game) {
 	return false;
     }
 

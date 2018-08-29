@@ -7,7 +7,6 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.egtinteractive.tic_tac_toe.games.GameStates;
 import com.egtinteractive.tic_tac_toe.games.TicTacToe;
 
 public class moveTest {

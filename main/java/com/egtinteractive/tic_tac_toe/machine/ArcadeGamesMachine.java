@@ -2,6 +2,7 @@ package com.egtinteractive.tic_tac_toe.machine;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
 import com.egtinteractive.tic_tac_toe.games.GameTypes;
+import com.egtinteractive.tic_tac_toe.games.GamesLoader;
 import com.egtinteractive.tic_tac_toe.io.IO;
 import com.egtinteractive.tic_tac_toe.utils.Utils;
 
@@ -97,7 +98,7 @@ public class ArcadeGamesMachine {
 	return moneyToReturn;
     }
 
-    private GameTypes selectGame(final String name) {
+    private GamesLoader selectGame(final String name) {
 	this.gameType = getGameByName(name);
 
 	boolean checkIF = this.state.selectGame(this, gameType);

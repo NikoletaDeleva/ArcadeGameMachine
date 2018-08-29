@@ -6,7 +6,7 @@ import com.egtinteractive.tic_tac_toe.boards.TicTacToeDrawBoard;
 import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 
-public enum GameTypes {
+public enum GameTypes implements GamesLoader {
     TIC_TAC_TOE("TicTacToe", 10) {
 	@Override
 	public void load(final ArcadeGamesMachine arcadeGamesMachine) {
@@ -21,20 +21,6 @@ public enum GameTypes {
 
 	    return newTicTacToeGame;
 	}
-    },
-
-    DUMMY("Dummy", 0) {
-
-	@Override
-	public void load(ArcadeGamesMachine arcadeGamesMachine) {
-	    arcadeGamesMachine.endService();
-	}
-
-	@Override
-	public Game getGame(ArcadeGamesMachine arcadeGamesMachine) {
-	    return null;
-	}
-
     };
     
     private final String name;
@@ -53,7 +39,9 @@ public enum GameTypes {
 	return name;
     }
 
+    @Override
     public abstract void load(final ArcadeGamesMachine arcadeGamesMachine);
 
+    @Override
     public abstract Game getGame(final ArcadeGamesMachine arcadeGamesMachine);
 }

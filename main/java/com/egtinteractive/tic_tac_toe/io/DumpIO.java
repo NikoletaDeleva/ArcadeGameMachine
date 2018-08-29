@@ -8,14 +8,12 @@ public class DumpIO implements IO {
 
     @Override
     public void close() throws Exception {
-	// TODO Auto-generated method stub
-	
+
     }
 
     @Override
     public void write(String str) {
-	// TODO Auto-generated method stub
-	
+
     }
 
     @Override

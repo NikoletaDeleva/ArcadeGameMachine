@@ -8,7 +8,7 @@ import com.egtinteractive.tic_tac_toe.utils.Utils;
 
 public class ArcadeGamesMachine {
     private StateMachine state;
-    private GameTypes gameType;
+    private GamesLoader gameType;
     private Game game;
     private long totalMoney;
     private long coins;
@@ -16,13 +16,16 @@ public class ArcadeGamesMachine {
     private final Utils utils;
 
     public ArcadeGamesMachine(final IO io) {
+	this(io, null);
+    }
+
+    public ArcadeGamesMachine(final IO io, GamesLoader gameType) {
 	this.coins = 0L;
 	this.totalMoney = 0L;
 	this.state = StateMachine.STAND_BY;
 	this.io = io;
-	this.gameType = null;
-	this.game = null;
 	this.utils = new Utils();
+	this.gameType = gameType;
     }
 
     public void waitToTurnOn() {
@@ -87,7 +90,7 @@ public class ArcadeGamesMachine {
 	this.coins += coins;
     }
 
-    void takeCustomerCoins(final GameTypes specificGame) {
+    void takeCustomerCoins(final GamesLoader specificGame) {
 	this.coins -= specificGame.getPrice();
 	this.setTotalMoney(specificGame.getPrice());
     }
@@ -99,9 +102,11 @@ public class ArcadeGamesMachine {
     }
 
     private GamesLoader selectGame(final String name) {
-	this.gameType = getGameByName(name);
+	if (this.gameType == null) {
+	    this.gameType = getGameByName(name);
+	}
 
-	boolean checkIF = this.state.selectGame(this, gameType);
+	boolean checkIF = this.state.selectGame(this, this.gameType);
 
 	if (checkIF) {
 	    this.game = gameType.getGame(this);
@@ -115,7 +120,7 @@ public class ArcadeGamesMachine {
 	this.selectGame(name);
     }
 
-    private GameTypes getGameByName(final String name) {
+    private GamesLoader getGameByName(final String name) {
 	for (GameTypes game : GameTypes.values()) {
 	    if (game.getName().trim().toLowerCase().equals(name.trim().toLowerCase())) {
 		return game;
@@ -163,6 +168,10 @@ public class ArcadeGamesMachine {
 
     public Utils getUtils() {
 	return utils;
+    }
+
+    public String getGameType() {
+        return gameType.getName();
     }
 
 }

@@ -9,8 +9,9 @@ import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 import com.egtinteractive.tic_tac_toe.player.Player;
 import com.egtinteractive.tic_tac_toe.utils.Utils;
 
-public abstract class Game {
-
+public class Game {
+    private final static String firstSign = "O";
+    private final static String secondSign = "X";
     private final IO io;
     private final Board board;
     private final DrawBoard drawBoard;
@@ -21,6 +22,7 @@ public abstract class Game {
     private DBQueries dbQueries;
     private Utils utils;
     private ArcadeGamesMachine machine;
+    private String current;
 
     public Game(final Board board, final DrawBoard drawBoard, final AI ai, final Player player, final IO io,
 	    ArcadeGamesMachine machine) {
@@ -48,11 +50,7 @@ public abstract class Game {
     }
 
     public void move() {
-	if (this.gameState == GameStates.AI) {
-	    this.gameState.moveAI(this);
-	} else {
-	    this.gameState.movePlayer(this);
-	}
+	this.gameState.move(this);
     }
 
     public void end() {
@@ -109,6 +107,22 @@ public abstract class Game {
 
     public ArcadeGamesMachine getMachine() {
 	return machine;
+    }
+
+    public String getCurrent() {
+	return current;
+    }
+
+    public void setCurrent(String current) {
+	this.current = current;
+    }
+
+    public String getFirstsign() {
+	return firstSign;
+    }
+
+    public String getSecondsign() {
+	return secondSign;
     }
 
 }

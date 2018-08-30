@@ -1,7 +1,6 @@
 package com.egtinteractive.tic_tac_toe.games;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.egtinteractive.tic_tac_toe.db_conection.DBQueries;
 import com.egtinteractive.tic_tac_toe.player.Player;
@@ -13,89 +12,84 @@ public enum GameStates implements GameMethods {
 
 	    game.getDrawBoard().drawBoard(game.getBoard());
 
-	    if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
+	    if (game.getUtils().choseRandom()) {
 
-		game.getIO().write("AI starts first");
-
-		game.getPlayer().setSign("X");
-		game.getAi().setSing("O");
-
-		game.getIO().write(String.format("%s %10s" + System.lineSeparator(), "AI : O", " Player : X"));
-
-		game.setPosition(game.getAi().move(game.getBoard()));
-		game.moveAI(game.getPosition());
-		game.getDrawBoard().drawBoard(game.getBoard());
+		game.setCurrent("AI");
 
 	    } else {
-		game.getIO().write("Player starts first");
-
-		game.getPlayer().setSign("O");
-		game.getAi().setSing("X");
-
-		game.getIO().write(String.format("%s %10s" + System.lineSeparator(), "AI : X", " Player : O"));
+		game.setCurrent("Player");
 	    }
 
-	    game.setGameState(GameStates.PLAYER);
+	    game.getIO().write(game.getCurrent() + " starts first");
+
+	    if (game.getCurrent().equals("Player")) {
+		game.getPlayer().setSign(game.getFirstsign());
+		game.getAi().setSing(game.getSecondsign());
+	    } else {
+		game.getAi().setSing(game.getFirstsign());
+		game.getPlayer().setSign(game.getSecondsign());
+	    }
+
+	    game.getIO().write(String.format("%s %10s" + System.lineSeparator(), "AI :" + game.getAi().getSign(),
+		    " Player : " + game.getPlayer().getSign()));
+
+	    game.setGameState(GameStates.MOVE);
 	    game.move();
 	    return true;
 	}
     },
-    AI {
+    MOVE {
+
 	@Override
-	public boolean moveAI(final Game game) {
+	public boolean move(final Game game) {
 	    if (endIfBoardIsFull(game)) {
 		return true;
 	    }
 
-	    game.setPosition(game.getAi().move(game.getBoard()));
-	    game.moveAI(game.getPosition());
-	    game.getDrawBoard().drawBoard(game.getBoard());
+	    if (game.getCurrent().equals("Player")) {
 
-	    if (game.isWinner()) {
+		String position;
+		do {
+		    position = game.getIO().read();
+		} while (!game.getUtils().isNumeric(position)
+			|| !game.getBoard().isFieldFree(Integer.valueOf(position)));
 
-		game.getIO().write("AI wins!");
-		addGameWithNoPlayer(game);
-		game.setGameState(GameStates.END_GAME);
-		game.end();
-
+		game.setPosition(Integer.valueOf(position));
+		game.movePlayer(game.getPosition());
 	    } else {
-		if (!endIfBoardIsFull(game)) {
-		    game.setGameState(GameStates.PLAYER);
-		    game.move();
-		}
-	    }
-	    return true;
-	}
-    },
-    PLAYER {
-
-	@Override
-	public boolean movePlayer(final Game game) {
-	    if (endIfBoardIsFull(game)) {
-		return true;
-	    }
-
-	    String position;
-	    do {
-		position = game.getIO().read();
-	    } while (!game.getUtils().isNumeric(position) || !game.getBoard().isFieldFree(Integer.valueOf(position)));
-
-	    game.setPosition(Integer.valueOf(position));
-	    game.movePlayer(game.getPosition());
-
-	    if (game.isWinner()) {
+		game.setPosition(game.getAi().move(game.getBoard()));
+		game.moveAI(game.getPosition());
 		game.getDrawBoard().drawBoard(game.getBoard());
-		game.getIO().write("Player wins!");
-		game.getIO().write("Set your name:");
-		String name = game.getIO().read();
-		giveName(name, game);
+	    }
+
+	    if (game.isWinner()) {
+		
+		game.getIO().write(game.getCurrent() +" wins!");
+		if (game.getCurrent().equals("Player")) {
+
+		    game.getDrawBoard().drawBoard(game.getBoard());
+
+		    game.getIO().write("Set your name:");
+		    String name = game.getIO().read();
+		    giveName(name, game);
+
+		} else {
+
+		    game.getIO().write("AI wins!");
+		    addGameWithNoPlayer(game);
+
+		}
 
 		game.setGameState(GameStates.END_GAME);
 		game.end();
 
 	    } else {
 		if (!endIfBoardIsFull(game)) {
-		    game.setGameState(GameStates.AI);
+		    if (game.getCurrent().equals("Player")) {
+			game.setCurrent("AI");
+		    } else {
+			game.setCurrent("Player");
+		    }
 		    game.move();
 		}
 
@@ -157,12 +151,7 @@ public enum GameStates implements GameMethods {
     }
 
     @Override
-    public boolean moveAI(final Game game) {
-	return false;
-    }
-
-    @Override
-    public boolean movePlayer(final Game game) {
+    public boolean move(final Game game) {
 	return false;
     }
 

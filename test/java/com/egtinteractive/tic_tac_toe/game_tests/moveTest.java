@@ -33,7 +33,6 @@ public class moveTest {
 	for (int i = 0; i <= 3; i++) {
 	    game.movePlayer(i);
 	}
-
 	for (int i = 3; i <= 8; i += 5) {
 	    game.moveAI(i);
 	}
@@ -49,7 +48,6 @@ public class moveTest {
 	for (int i = 0; i <= 8; i += 3) {
 	    game.movePlayer(i);
 	}
-
 	for (int i = 1; i <= 8; i += 5) {
 	    game.moveAI(i);
 	}
@@ -66,13 +64,11 @@ public class moveTest {
 	for (int i = 0; i <= 8; i += 4) {
 	    game.movePlayer(i);
 	}
-
 	for (int i = 1; i <= 8; i += 5) {
 	    game.moveAI(i);
 	}
 
 	assertTrue(game.isWinner());
-
     }
 
     @Test(dataProvider = "game")
@@ -83,11 +79,9 @@ public class moveTest {
 	for (int i = 0; i <= 1; i++) {
 	    game.movePlayer(i);
 	}
-
 	for (int i = 2; i <= 4; i++) {
 	    game.moveAI(i);
 	}
-
 	for (int i = 5; i <= 7; i++) {
 	    game.movePlayer(i);
 	}

@@ -1,7 +1,6 @@
 package com.egtinteractive.tic_tac_toe.machine;
 
 import com.egtinteractive.tic_tac_toe.games.Game;
-import com.egtinteractive.tic_tac_toe.games.GameTypes;
 import com.egtinteractive.tic_tac_toe.games.GamesLoader;
 
 public enum StateMachine implements Machine {
@@ -65,7 +64,7 @@ public enum StateMachine implements Machine {
 	}
 
 	@Override
-	public boolean selectGame(final ArcadeGamesMachine machine, final GameTypes gameType) {
+	public boolean selectGame(final ArcadeGamesMachine machine, final GamesLoader gameType) {
 
 	    if (gameType == null) {
 		machine.getIo().write("Selct game!");
@@ -129,7 +128,7 @@ public enum StateMachine implements Machine {
     }
 
     @Override
-    public boolean selectGame(final ArcadeGamesMachine machine, final GameTypes gameType) {
+    public boolean selectGame(final ArcadeGamesMachine machine, final GamesLoader gameType) {
 	return false;
     }
 

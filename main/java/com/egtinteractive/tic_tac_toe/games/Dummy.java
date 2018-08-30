@@ -6,7 +6,7 @@ public class Dummy implements GamesLoader {
     final String name;
     final long price;
 
-    Dummy() {
+    public Dummy() {
 	this.name = "Dummy";
 	this.price = 0;
     }
@@ -21,10 +21,12 @@ public class Dummy implements GamesLoader {
 	return null;
     }
 
+    @Override
     public long getPrice() {
 	return price;
     }
 
+    @Override
     public String getName() {
 	return name;
     }

@@ -30,11 +30,13 @@ public enum GameTypes implements GamesLoader {
 	this.name = name;
 	this.price = price;
     }
-
+    
+    @Override
     public long getPrice() {
 	return price;
     }
 
+    @Override
     public String getName() {
 	return name;
     }

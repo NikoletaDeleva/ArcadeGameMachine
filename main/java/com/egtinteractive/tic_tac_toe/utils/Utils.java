@@ -2,6 +2,7 @@ package com.egtinteractive.tic_tac_toe.utils;
 
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.util.Random;
 
 public class Utils {
 
@@ -13,5 +14,9 @@ public class Utils {
 	final ParsePosition pos = new ParsePosition(0);
 	formatter.parse(str, pos);
 	return str.length() == pos.getIndex();
+    }
+    
+    public boolean choseRandom() {
+	return new Random().nextBoolean();
     }
 }

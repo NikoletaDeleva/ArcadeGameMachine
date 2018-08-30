@@ -4,8 +4,11 @@ import com.egtinteractive.tic_tac_toe.machine.ArcadeGamesMachine;
 
 public interface GamesLoader {
 
-    void load(ArcadeGamesMachine arcadeGamesMachine);
+    public void load(ArcadeGamesMachine arcadeGamesMachine);
 
-    Game getGame(ArcadeGamesMachine arcadeGamesMachine);
+    public Game getGame(ArcadeGamesMachine arcadeGamesMachine);
 
+    public long getPrice();
+
+    public String getName();
 }

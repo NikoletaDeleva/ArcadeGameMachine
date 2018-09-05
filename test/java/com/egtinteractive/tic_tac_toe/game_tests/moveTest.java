@@ -7,7 +7,15 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.egtinteractive.tic_tac_toe.ai.AI;
+import com.egtinteractive.tic_tac_toe.ai.AITicTacToe;
+import com.egtinteractive.tic_tac_toe.boards.Board;
+import com.egtinteractive.tic_tac_toe.boards.TicTacToeBoard;
+import com.egtinteractive.tic_tac_toe.boards.TicTacToeDrawBoard;
 import com.egtinteractive.tic_tac_toe.games.TicTacToe;
+import com.egtinteractive.tic_tac_toe.io.AnotherDumpIO;
+import com.egtinteractive.tic_tac_toe.io.IO;
+import com.egtinteractive.tic_tac_toe.player.Player;
 
 public class moveTest {
     @DataProvider(name = "game")
@@ -91,4 +99,26 @@ public class moveTest {
 	assertFalse(game.isWinner());
     }
 
+    @Test(dataProvider = "game")
+    public void playMoveShouldThenHaveComputerPlay(final TicTacToe game) {
+	final AI ai = new AITicTacToe() {
+	    public int count = 0;
+	
+	    @Override
+	    public Integer move(final Board board) {
+		return count++;
+	    }
+	};
+
+	final IO io = new AnotherDumpIO();
+	TicTacToe gameOne = new TicTacToe(new TicTacToeBoard(), new TicTacToeDrawBoard(io), (AITicTacToe) ai, new Player(null , 0), io, null);
+
+	int playerMove = 4;
+
+	for (int i = 0; i < 3; i++) {
+	    assertEquals(game.getBoard().getField(i), " ");
+	 
+	    assertEquals(game.getBoard().getField(i), "O");
+	}
+    }
 }
